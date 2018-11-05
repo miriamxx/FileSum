@@ -1,0 +1,177 @@
+/*
+
+ * The purpose of this FileSum program is to enchance the previous 
+ * program named FileSum (program that read floating 
+ * point values from a file and perform analysis of those 
+ * values). It will allow the output that was previously 
+ * displayed at the terminal (console) to be written to a file.
+ * This program will prompt users for a file name
+ * and will attempt to open the file entered then the program will
+ * write to this file, not read from the file. 
+ * This program will now have two try-catch constructs that will deal
+ * with FileNotFoundException when the application runs. One will be 
+ * associated with the opening of the input file and the other is associated 
+ * with the opening of the output file. The program will notify users that 
+ * the file cannot be found if this exception is thrown, so the program will terminate.
+
+ */
+
+/**
+ * 
+ * Date 10/24/18
+ * 
+ * Date after enhancements: 10/30/18
+ * 
+ * @author miriam espino 
+ */
+
+
+
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+      
+
+public class FileSum {
+
+    public static void main(String[] args) {
+      
+        // Create a Scanner object for keyboard input
+        Scanner keyboard= new Scanner(System.in); 
+         
+        // Prompting user to input file name
+        System.out.print("Enter the input filename: Numbers.txt" + "\n");
+        String fileName = keyboard.nextLine();
+        
+        PrintWriter outputStream = null; // setting outputStream to an empty object
+        Scanner fileIn = null; // setting fileIn to an empty object   
+        FileInputStream file = null; // setting file to an empty object
+        FileOutputStream fileOut = null; // setting fileOut to an empty object
+        String fileName1 = keyboard.nextLine();
+        
+        // attempting to open the file
+        try
+        {
+       
+        // file is found, so code will execute 
+        file = new FileInputStream(fileName);
+       
+        }
+        
+         // file could not be found
+        catch (FileNotFoundException e)
+        {
+        // if inputStream file could not be found, this code is executed.
+         System.out.println("File not found.");
+         System.out.println("Program is ending.");
+         
+         // program will terminate
+         System.exit(0); 
+         
+        }
+        
+        // opening the file
+        fileIn = new Scanner(file);
+        
+        System.out.println("Ready to process data from: " + fileName);
+        System.out.println("\n");
+        
+        // prompting the user to enter a output file name
+        System.out.println("Enter the output filename: output.txt " + "\n");
+        fileName1 = keyboard.nextLine();
+        
+        
+        // attempt to open the file 
+        try
+        {  
+                
+         // file is found, so code will execute 
+         fileOut = new FileOutputStream(fileName1);
+       
+        }
+        
+       
+        catch (FileNotFoundException e)
+        {
+        // if outputStream file is not found, this code will execute.
+           System.out.println("File not found.");
+           System.out.println("Program is ending."); 
+           
+           //program is terminated 
+           System.exit(0); 
+  
+        }
+    
+        // opening file
+         outputStream = new PrintWriter(fileOut);
+       
+         // At this point the file has been opened for output processing. 
+         // We can write to the file. 
+         
+        
+        System.out.print("Ready to process data from: " + fileName1 + "\n");  
+        
+       // declaring variables and allocating their values to memory.
+       double largest = 0, smallest = 0, sum = 0, mean = 0, var1 = 0; 
+       int count = 0;
+       
+       // body of while loop and if statements 
+        while (fileIn.hasNextDouble())
+        {
+        // adding 1 to each line
+        count++; 
+            var1 = fileIn.nextDouble(); 
+            
+            if (count == 1)
+            {  
+                largest = var1;
+                smallest = var1;
+                
+            }
+                
+                sum += var1;
+                      
+            if (var1 > largest)   
+            {
+                  largest = var1; 
+                  
+            }
+                 
+            if(var1 < smallest)
+            {
+                  smallest = var1;
+            }
+            
+                
+        } 
+        
+        // calculates the mean of values
+        mean = sum / count; 
+         
+        // will display the values from the file 
+        System.out.println("Numbers of values read: " + count);
+        System.out.println("Sum of values: " + sum);
+        System.out.println("Average of values: " + mean);
+        System.out.println("Largest of values: " + largest);
+        System.out.println("Smallest of values: " + smallest);
+        
+        System.out.println("\n");
+        
+        // writing to the file.
+        outputStream.println(count);
+        outputStream.println(sum);
+        outputStream.println(mean);
+        outputStream.println(largest);
+        outputStream.println(smallest);
+        
+        System.out.println("End of program.");
+         
+        outputStream.close(); // closing outputstream     
+        fileIn.close(); // closing file
+        keyboard.close(); // closing scanner 
+            
+      }
+ 
+    }
